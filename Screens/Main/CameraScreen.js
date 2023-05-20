@@ -22,26 +22,6 @@ const CameraScreen = ({ navigation }) => {
 
   const camera = useRef();
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Не вдалося визначити місцезнаходження");
-      }
-
-      const location = await Location.getCurrentPositionAsync();
-      const coords = {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setLocation(coords);
-      const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      const libraryPermission = await MediaLibrary.requestPermissionsAsync();
-      setCameraAllow(cameraPermission.status === "granted");
-      setLibraryAllow(libraryPermission.status === "granted");
-    })();
-  }, []);
-
   const takePhoto = async () => {
     const newPhoto = await camera.current.takePictureAsync();
     setPhoto(newPhoto.uri);
